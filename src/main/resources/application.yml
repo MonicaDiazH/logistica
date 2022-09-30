@@ -1,0 +1,32 @@
+# config context path to "/" by setting an empty string
+server:
+  port: 8082
+
+# JACKSON
+spring:
+  main:
+    allow-circular-references: true
+
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  datasource:
+    ## MYSQL
+    url: jdbc:mysql://localhost/logistica
+    username: root
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+jwt:
+  header: Authorization
+  secret: logiticsSecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
