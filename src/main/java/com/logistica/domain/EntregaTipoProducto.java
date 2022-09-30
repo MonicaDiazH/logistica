@@ -1,5 +1,6 @@
 package com.logistica.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -37,6 +38,7 @@ public class EntregaTipoProducto implements Serializable {
     @JoinColumn(name = "entrega_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JsonIgnore
     private Entrega entrega; 
 
     @JoinColumn(name = "tipo_producto_id", referencedColumnName = "id")

@@ -1,11 +1,11 @@
 package com.logistica.controller;
 
 import com.logistica.domain.Entrega;
+import com.logistica.domain.EntregaTipoProducto;
 import com.logistica.domain.utils.EntregaPagingResponse;
 import com.logistica.domain.utils.PagingHeaders;
 import com.logistica.service.EntregaService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +85,12 @@ public class EntregaController {
         headers.set(PagingHeaders.PAGE_NUMBER.getName(), String.valueOf(response.getPageNumber()));
         headers.set(PagingHeaders.PAGE_TOTAL.getName(), String.valueOf(response.getPageTotal()));
         return headers;
+    }
+
+    @Transactional
+    @GetMapping(value = "/{idEntrega}/detail", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<EntregaTipoProducto>> getEntregaDetail(@PathVariable(name = "idEntrega") Integer idEntrega) {
+        return new ResponseEntity<>(entregaService.getEntregaDetail(idEntrega), HttpStatus.OK);
     }
 }

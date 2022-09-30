@@ -1,9 +1,11 @@
 package com.logistica.service;
 
 import com.logistica.domain.Entrega;
+import com.logistica.domain.EntregaTipoProducto;
 import com.logistica.domain.utils.EntregaPagingResponse;
 import com.logistica.domain.utils.PagingHeaders;
 import com.logistica.repository.EntregaRepository;
+import com.logistica.repository.EntregaTipoProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,9 @@ public class EntregaService {
 
     @Autowired
     private EntregaRepository entregaRepository;
+
+    @Autowired
+    private EntregaTipoProductoRepository entregaTipoProductoRepository;
 
     /**
      * delete element
@@ -134,5 +139,14 @@ public class EntregaService {
      */
     protected Entrega save(Entrega item) {
         return entregaRepository.save(item);
+    }
+
+    /**
+     * get detail entrega
+     *
+     * @return List EntregaTipoProducto
+     */
+    public List<EntregaTipoProducto> getEntregaDetail(Integer idEntrega) {
+        return entregaTipoProductoRepository.findAllByIdEntrega(idEntrega);
     }
 }
