@@ -1,5 +1,6 @@
 package com.logistica.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -41,33 +42,13 @@ public class Transporte implements Serializable {
 
     @OneToMany(mappedBy = "transporte", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @ToString.Exclude
+    @JsonIgnore
     private Set<Entrega> entregaes;
 
     @JoinColumn(name = "tipo_transporte_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
     private TipoTransporte tipoTransporte;
-
-    // delegates de ids
-    public Integer getTipoTransporteIdDelegate() {
-        if(tipoTransporte != null) {
-            return tipoTransporte.getId();
-        }
-        else return null;
-    } 
-    
-    public String getTipoTransporteStDescripcionDelegate() {
-        if(tipoTransporte != null) {
-            return tipoTransporte.getId().toString();
-        }
-        else return "";
-    }
-
-    public String getTipoTransporteSelect2Delegate() {
-        return String.valueOf(getTipoTransporteIdDelegate())
-            + "|"
-            + getTipoTransporteStDescripcionDelegate();
-    }
 
     @Override
     public boolean equals(Object o) {

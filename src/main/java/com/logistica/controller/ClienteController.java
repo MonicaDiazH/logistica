@@ -1,9 +1,9 @@
 package com.logistica.controller;
 
-import com.logistica.domain.Bodega;
+import com.logistica.domain.Cliente;
+import com.logistica.domain.utils.ClientePagingResponse;
 import com.logistica.domain.utils.PagingHeaders;
-import com.logistica.domain.utils.BodegaPagingResponse;
-import com.logistica.service.BodegaService;
+import com.logistica.service.ClienteService;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
@@ -19,40 +19,39 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/bodega")
-public class BodegaController {
+@RequestMapping("/cliente")
+public class ClienteController {
 
     @Autowired
-    private BodegaService bodegaService;
+    private ClienteService clienteService;
 
     @Transactional
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Bodega> create(@RequestBody Bodega item) {
-        return new ResponseEntity<>(bodegaService.create(item), HttpStatus.CREATED);
+    public ResponseEntity<Cliente> create(@RequestBody Cliente item) {
+        return new ResponseEntity<>(clienteService.create(item), HttpStatus.CREATED);
     }
 
     @Transactional
     @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Bodega update(@PathVariable(name = "id") Integer id, @RequestBody Bodega item) {
-        return bodegaService.update(id, item);
+    public Cliente update(@PathVariable(name = "id") Integer id, @RequestBody Cliente item) {
+        return clienteService.update(id, item);
     }
 
     @Transactional
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable(name = "id") Integer id) {
-        bodegaService.delete(id);
+        clienteService.delete(id);
     }
 
     @Transactional
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Bodega> get(@PathVariable(name = "id") Integer id) {
-        return bodegaService.get(id)
+    public ResponseEntity<Cliente> get(@PathVariable(name = "id") Integer id) {
+        return clienteService.get(id)
                 .map(bodega -> new ResponseEntity<>(bodega, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -60,18 +59,19 @@ public class BodegaController {
     @Transactional
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Bodega>> get(
+    public ResponseEntity<List<Cliente>> get(
             @And({
                     @Spec(path = "nombre", params = "nombre", spec = Like.class),
+                    @Spec(path = "telefono", params = "telefono", spec = Like.class),
                     @Spec(path = "direccion", params = "direccion", spec = Like.class)
-            }) Specification<Bodega> spec,
+            }) Specification<Cliente> spec,
             Sort sort,
             @RequestHeader HttpHeaders headers) {
-        final BodegaPagingResponse response = bodegaService.get(spec, headers, sort);
+        final ClientePagingResponse response = clienteService.get(spec, headers, sort);
         return new ResponseEntity<>(response.getElements(), returnHttpHeaders(response), HttpStatus.OK);
     }
 
-    public HttpHeaders returnHttpHeaders(BodegaPagingResponse response) {
+    public HttpHeaders returnHttpHeaders(ClientePagingResponse response) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(PagingHeaders.COUNT.getName(), String.valueOf(response.getCount()));
         headers.set(PagingHeaders.PAGE_SIZE.getName(), String.valueOf(response.getPageSize()));

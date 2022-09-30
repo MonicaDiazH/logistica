@@ -1,5 +1,6 @@
 package com.logistica.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -40,6 +41,7 @@ public class TipoTransporte implements Serializable {
 
     @OneToMany(mappedBy = "tipoTransporte", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @ToString.Exclude
+    @JsonIgnore
     private Set<Transporte> transportees;
 
     @Override

@@ -2,7 +2,7 @@ package com.logistica.service;
 
 import com.logistica.domain.Puerto;
 import com.logistica.domain.utils.PagingHeaders;
-import com.logistica.domain.utils.PagingPuertoResponse;
+import com.logistica.domain.utils.PuertoPagingResponse;
 import com.logistica.repository.PuertoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,12 +54,12 @@ public class PuertoService {
      * @param sort    sort criteria
      * @return retrieve elements with pagination
      */
-    public PagingPuertoResponse get(Specification<Puerto> spec, HttpHeaders headers, Sort sort) {
+    public PuertoPagingResponse get(Specification<Puerto> spec, HttpHeaders headers, Sort sort) {
         if (isRequestPaged(headers)) {
             return get(spec, buildPageRequest(headers, sort));
         } else {
             List<Puerto> entities = get(spec, sort);
-            return new PagingPuertoResponse((long) entities.size(), 0L, 0L, 0L, 0L, entities);
+            return new PuertoPagingResponse((long) entities.size(), 0L, 0L, 0L, 0L, entities);
         }
     }
 
@@ -80,10 +80,10 @@ public class PuertoService {
      * @param pageable pagination data
      * @return retrieve elements with pagination
      */
-    public PagingPuertoResponse get(Specification<Puerto> spec, Pageable pageable) {
+    public PuertoPagingResponse get(Specification<Puerto> spec, Pageable pageable) {
         Page<Puerto> page = puertoRepository.findAll(spec, pageable);
         List<Puerto> content = page.getContent();
-        return new PagingPuertoResponse(page.getTotalElements(), (long) page.getNumber(), (long) page.getNumberOfElements(), pageable.getOffset(), (long) page.getTotalPages(), content);
+        return new PuertoPagingResponse(page.getTotalElements(), (long) page.getNumber(), (long) page.getNumberOfElements(), pageable.getOffset(), (long) page.getTotalPages(), content);
     }
 
     /**

@@ -2,7 +2,7 @@ package com.logistica.controller;
 
 import com.logistica.domain.Puerto;
 import com.logistica.domain.utils.PagingHeaders;
-import com.logistica.domain.utils.PagingPuertoResponse;
+import com.logistica.domain.utils.PuertoPagingResponse;
 import com.logistica.service.PuertoService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
@@ -69,11 +69,11 @@ public class PuertoController {
             }) Specification<Puerto> spec,
             Sort sort,
             @RequestHeader HttpHeaders headers) {
-        final PagingPuertoResponse response = puertoService.get(spec, headers, sort);
+        final PuertoPagingResponse response = puertoService.get(spec, headers, sort);
         return new ResponseEntity<>(response.getElements(), returnHttpHeaders(response), HttpStatus.OK);
     }
 
-    public HttpHeaders returnHttpHeaders(PagingPuertoResponse response) {
+    public HttpHeaders returnHttpHeaders(PuertoPagingResponse response) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(PagingHeaders.COUNT.getName(), String.valueOf(response.getCount()));
         headers.set(PagingHeaders.PAGE_SIZE.getName(), String.valueOf(response.getPageSize()));

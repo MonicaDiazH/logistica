@@ -1,9 +1,9 @@
 package com.logistica.service;
 
-import com.logistica.domain.Bodega;
+import com.logistica.domain.Entrega;
+import com.logistica.domain.utils.EntregaPagingResponse;
 import com.logistica.domain.utils.PagingHeaders;
-import com.logistica.domain.utils.BodegaPagingResponse;
-import com.logistica.repository.BodegaRepository;;
+import com.logistica.repository.EntregaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,12 +19,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+
 @Service
 @Transactional
-public class BodegaService {
+public class EntregaService {
 
     @Autowired
-    private BodegaRepository bodegaRepository;
+    private EntregaRepository entregaRepository;
 
     /**
      * delete element
@@ -33,17 +34,17 @@ public class BodegaService {
      * @throws EntityNotFoundException Exception when retrieve entity
      */
     public void delete(Integer id) {
-        Bodega entity = bodegaRepository.findById(id)
+        Entrega entity = entregaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Can not find the entity bodega (%s = %s).", "id", id)));
-        bodegaRepository.delete(entity);
+        entregaRepository.delete(entity);
     }
 
     /**
      * @param id element ID
      * @return element
      */
-    public Optional<Bodega> get(Integer id) {
-        return bodegaRepository.findById(id);
+    public Optional<Entrega> get(Integer id) {
+        return entregaRepository.findById(id);
     }
 
     /**
@@ -54,12 +55,12 @@ public class BodegaService {
      * @param sort    sort criteria
      * @return retrieve elements with pagination
      */
-    public BodegaPagingResponse get(Specification<Bodega> spec, HttpHeaders headers, Sort sort) {
+    public EntregaPagingResponse get(Specification<Entrega> spec, HttpHeaders headers, Sort sort) {
         if (isRequestPaged(headers)) {
             return get(spec, buildPageRequest(headers, sort));
         } else {
-            List<Bodega> entities = get(spec, sort);
-            return new BodegaPagingResponse((long) entities.size(), 0L, 0L, 0L, 0L, entities);
+            List<Entrega> entities = get(spec, sort);
+            return new EntregaPagingResponse((long) entities.size(), 0L, 0L, 0L, 0L, entities);
         }
     }
 
@@ -80,10 +81,10 @@ public class BodegaService {
      * @param pageable pagination data
      * @return retrieve elements with pagination
      */
-    public BodegaPagingResponse get(Specification<Bodega> spec, Pageable pageable) {
-        Page<Bodega> page = bodegaRepository.findAll(spec, pageable);
-        List<Bodega> content = page.getContent();
-        return new BodegaPagingResponse(page.getTotalElements(), (long) page.getNumber(), (long) page.getNumberOfElements(), pageable.getOffset(), (long) page.getTotalPages(), content);
+    public EntregaPagingResponse get(Specification<Entrega> spec, Pageable pageable) {
+        Page<Entrega> page = entregaRepository.findAll(spec, pageable);
+        List<Entrega> content = page.getContent();
+        return new EntregaPagingResponse(page.getTotalElements(), (long) page.getNumber(), (long) page.getNumberOfElements(), pageable.getOffset(), (long) page.getTotalPages(), content);
     }
 
     /**
@@ -92,8 +93,8 @@ public class BodegaService {
      * @param spec *
      * @return elements
      */
-    public List<Bodega> get(Specification<Bodega> spec, Sort sort) {
-        return bodegaRepository.findAll(spec, sort);
+    public List<Entrega> get(Specification<Entrega> spec, Sort sort) {
+        return entregaRepository.findAll(spec, sort);
     }
 
     /**
@@ -104,7 +105,7 @@ public class BodegaService {
      * //     * @throws CreateWithIdException   Exception lancée lors de la création d'un objet existant
      * @throws EntityNotFoundException Exception lors de récupération de l'entité en base
      */
-    public Bodega create(Bodega item) {
+    public Entrega create(Entrega item) {
         return save(item);
     }
 
@@ -116,7 +117,7 @@ public class BodegaService {
      * @return element after update
      * @throws EntityNotFoundException Exception when retrieve entity
      */
-    public Bodega update(Integer id, Bodega item) {
+    public Entrega update(Integer id, Entrega item) {
         if (item.getId() == null) {
             throw new RuntimeException("Can not update entity, entity without ID.");
         } else if (!id.equals(item.getId())) {
@@ -131,7 +132,7 @@ public class BodegaService {
      * @param item element to save
      * @return element after save
      */
-    protected Bodega save(Bodega item) {
-        return bodegaRepository.save(item);
+    protected Entrega save(Entrega item) {
+        return entregaRepository.save(item);
     }
 }

@@ -35,54 +35,14 @@ public class EntregaTipoProducto implements Serializable {
     private BigDecimal total; 
 
     @JoinColumn(name = "entrega_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
     private Entrega entrega; 
 
     @JoinColumn(name = "tipo_producto_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude
-    private TipoProducto tipoProducto; 
-
-    // delegates de ids
-    public Integer getEntregaIdDelegate() {
-        if(entrega != null) {
-            return entrega.getId();
-        }
-        else return null;
-    } 
-    
-    public String getEntregaStDescripcionDelegate() {
-        if(entrega != null) {
-            return entrega.getId().toString();
-        }
-        else return "";
-    }
-
-    public String getEntregaSelect2Delegate() {
-        return String.valueOf(getEntregaIdDelegate())
-            + "|"
-            + getEntregaStDescripcionDelegate();
-    }
-    public Integer getTipoProductoIdDelegate() {
-        if(tipoProducto != null) {
-            return tipoProducto.getId();
-        }
-        else return null;
-    } 
-    
-    public String getTipoProductoStDescripcionDelegate() {
-        if(tipoProducto != null) {
-            return tipoProducto.getId().toString();
-        }
-        else return "";
-    }
-
-    public String getTipoProductoSelect2Delegate() {
-        return String.valueOf(getTipoProductoIdDelegate())
-            + "|"
-            + getTipoProductoStDescripcionDelegate();
-    }
+    private TipoProducto tipoProducto;
 
     @Override
     public boolean equals(Object o) {

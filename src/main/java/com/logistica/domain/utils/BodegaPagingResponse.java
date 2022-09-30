@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PagingBodegaResponse {
+public class BodegaPagingResponse {
 
     /**
      * entity count

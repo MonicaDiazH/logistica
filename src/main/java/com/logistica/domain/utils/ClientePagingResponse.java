@@ -1,6 +1,6 @@
 package com.logistica.domain.utils;
 
-import com.logistica.domain.Puerto;
+import com.logistica.domain.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PagingPuertoResponse {
+public class ClientePagingResponse {
 
     /**
      * entity count
@@ -38,5 +38,5 @@ public class PagingPuertoResponse {
     /**
      * elements of page.
      */
-    private List<Puerto> elements;
+    private List<Cliente> elements;
 }
