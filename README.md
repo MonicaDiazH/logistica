@@ -3,6 +3,9 @@
 ## Demo
 https://projectlogistica.herokuapp.com/api/auth
 
+Postman Collection:
+https://drive.google.com/file/d/1thRo_SQPSE7y7tO2BBhjxMbBRFspJlHw/view?usp=sharing
+
 ## Installation
 
 Clone source code from git
