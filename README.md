@@ -1,5 +1,8 @@
 # Project Logistica - Mónica Díaz
 
+## Demo
+https://projectlogistica.herokuapp.com/api/auth
+
 ## Installation
 
 Clone source code from git
