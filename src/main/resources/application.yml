@@ -1,6 +1,8 @@
 # config context path to "/" by setting an empty string
 server:
   port: 8082
+  servlet:
+    context-path: /api
 
 # JACKSON
 spring:
@@ -12,9 +14,9 @@ spring:
       INDENT_OUTPUT: true
   datasource:
     ## MYSQL
-    url: jdbc:mysql://localhost/logistica
-    username: root
-    password:
+    url: jdbc:mysql://us-cdbr-east-06.cleardb.net/heroku_5d5475fb76dbd91
+    username: bd845ddf008a8a
+    password: 558ee23b
     driver-class-name: com.mysql.jdbc.Driver
 
 
