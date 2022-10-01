@@ -101,8 +101,6 @@ public class BodegaService {
      *
      * @param item element to create
      * @return element after creation
-     * //     * @throws CreateWithIdException   Exception lancée lors de la création d'un objet existant
-     * @throws EntityNotFoundException Exception lors de récupération de l'entité en base
      */
     public Bodega create(Bodega item) {
         return save(item);

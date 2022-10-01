@@ -2,6 +2,7 @@ package com.logistica.controller;
 
 import com.logistica.domain.Entrega;
 import com.logistica.domain.EntregaTipoProducto;
+import com.logistica.domain.dto.EntregaDTO;
 import com.logistica.domain.utils.EntregaPagingResponse;
 import com.logistica.domain.utils.PagingHeaders;
 import com.logistica.service.EntregaService;
@@ -31,8 +32,12 @@ public class EntregaController {
     @Transactional
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Entrega> create(@RequestBody Entrega item) {
-        return new ResponseEntity<>(entregaService.create(item), HttpStatus.CREATED);
+    public ResponseEntity<Entrega> create(@RequestBody EntregaDTO item) {
+        Entrega entrega = entregaService.create(item);
+        if(entrega.getId() == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(entrega, HttpStatus.CREATED);
     }
 
     @Transactional
