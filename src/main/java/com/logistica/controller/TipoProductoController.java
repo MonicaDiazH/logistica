@@ -1,10 +1,11 @@
 package com.logistica.controller;
 
-import com.logistica.domain.Cliente;
-import com.logistica.domain.Entrega;
-import com.logistica.domain.utils.ClientePagingResponse;
+import com.logistica.domain.TipoProducto;
 import com.logistica.domain.utils.PagingHeaders;
-import com.logistica.service.ClienteService;
+import com.logistica.domain.utils.TipoProductoPagingResponse;
+import com.logistica.service.TipoProductoService;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThan;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
@@ -20,39 +21,40 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/cliente")
-public class ClienteController {
+@RequestMapping("/tipoProducto")
+public class TipoProductoController {
 
     @Autowired
-    private ClienteService clienteService;
+    private TipoProductoService tipoProductoService;
 
     @Transactional
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Cliente> create(@RequestBody Cliente item) {
-        return new ResponseEntity<>(clienteService.create(item), HttpStatus.CREATED);
+    public ResponseEntity<TipoProducto> create(@RequestBody TipoProducto item) {
+        return new ResponseEntity<>(tipoProductoService.create(item), HttpStatus.CREATED);
     }
 
     @Transactional
     @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Cliente update(@PathVariable(name = "id") Integer id, @RequestBody Cliente item) {
-        return clienteService.update(id, item);
+    public TipoProducto update(@PathVariable(name = "id") Integer id, @RequestBody TipoProducto item) {
+        return tipoProductoService.update(id, item);
     }
 
     @Transactional
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable(name = "id") Integer id) {
-        clienteService.delete(id);
+        tipoProductoService.delete(id);
     }
 
     @Transactional
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Cliente> get(@PathVariable(name = "id") Integer id) {
-        return clienteService.get(id)
+    public ResponseEntity<TipoProducto> get(@PathVariable(name = "id") Integer id) {
+        return tipoProductoService.get(id)
                 .map(bodega -> new ResponseEntity<>(bodega, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -60,19 +62,19 @@ public class ClienteController {
     @Transactional
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Cliente>> get(
+    public ResponseEntity<List<TipoProducto>> get(
             @And({
                     @Spec(path = "nombre", params = "nombre", spec = Like.class),
-                    @Spec(path = "telefono", params = "telefono", spec = Like.class),
-                    @Spec(path = "direccion", params = "direccion", spec = Like.class)
-            }) Specification<Cliente> spec,
+                    @Spec(path = "descripcion", params = "descripcion", spec = Like.class),
+                    @Spec(path = "precio", params = "precio", spec = Equal.class)
+            }) Specification<TipoProducto> spec,
             Sort sort,
             @RequestHeader HttpHeaders headers) {
-        final ClientePagingResponse response = clienteService.get(spec, headers, sort);
+        final TipoProductoPagingResponse response = tipoProductoService.get(spec, headers, sort);
         return new ResponseEntity<>(response.getElements(), returnHttpHeaders(response), HttpStatus.OK);
     }
 
-    public HttpHeaders returnHttpHeaders(ClientePagingResponse response) {
+    public HttpHeaders returnHttpHeaders(TipoProductoPagingResponse response) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(PagingHeaders.COUNT.getName(), String.valueOf(response.getCount()));
         headers.set(PagingHeaders.PAGE_SIZE.getName(), String.valueOf(response.getPageSize()));
@@ -80,12 +82,5 @@ public class ClienteController {
         headers.set(PagingHeaders.PAGE_NUMBER.getName(), String.valueOf(response.getPageNumber()));
         headers.set(PagingHeaders.PAGE_TOTAL.getName(), String.valueOf(response.getPageTotal()));
         return headers;
-    }
-
-    @Transactional
-    @GetMapping(value = "/{clienteId}/entregas", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Entrega>> getEntregaDetail(@PathVariable(name = "clienteId") Integer clienteId) {
-        return new ResponseEntity<>(clienteService.getEntregas(clienteId), HttpStatus.OK);
     }
 }

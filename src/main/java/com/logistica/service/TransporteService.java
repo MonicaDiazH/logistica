@@ -1,11 +1,9 @@
 package com.logistica.service;
 
-import com.logistica.domain.Cliente;
-import com.logistica.domain.Entrega;
-import com.logistica.domain.utils.ClientePagingResponse;
+import com.logistica.domain.Transporte;
 import com.logistica.domain.utils.PagingHeaders;
-import com.logistica.repository.ClienteRepository;
-import com.logistica.repository.EntregaRepository;
+import com.logistica.domain.utils.TransportePagingResponse;
+import com.logistica.repository.TransporteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,15 +19,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+
 @Service
 @Transactional
-public class ClienteService {
+public class TransporteService {
 
     @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private EntregaRepository entregaRepository;
+    private TransporteRepository transporteRepository;
 
     /**
      * delete element
@@ -38,17 +34,17 @@ public class ClienteService {
      * @throws EntityNotFoundException Exception when retrieve entity
      */
     public void delete(Integer id) {
-        Cliente entity = clienteRepository.findById(id)
+        Transporte entity = transporteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Can not find the entity bodega (%s = %s).", "id", id)));
-        clienteRepository.delete(entity);
+        transporteRepository.delete(entity);
     }
 
     /**
      * @param id element ID
      * @return element
      */
-    public Optional<Cliente> get(Integer id) {
-        return clienteRepository.findById(id);
+    public Optional<Transporte> get(Integer id) {
+        return transporteRepository.findById(id);
     }
 
     /**
@@ -59,12 +55,12 @@ public class ClienteService {
      * @param sort    sort criteria
      * @return retrieve elements with pagination
      */
-    public ClientePagingResponse get(Specification<Cliente> spec, HttpHeaders headers, Sort sort) {
+    public TransportePagingResponse get(Specification<Transporte> spec, HttpHeaders headers, Sort sort) {
         if (isRequestPaged(headers)) {
             return get(spec, buildPageRequest(headers, sort));
         } else {
-            List<Cliente> entities = get(spec, sort);
-            return new ClientePagingResponse((long) entities.size(), 0L, 0L, 0L, 0L, entities);
+            List<Transporte> entities = get(spec, sort);
+            return new TransportePagingResponse((long) entities.size(), 0L, 0L, 0L, 0L, entities);
         }
     }
 
@@ -85,10 +81,10 @@ public class ClienteService {
      * @param pageable pagination data
      * @return retrieve elements with pagination
      */
-    public ClientePagingResponse get(Specification<Cliente> spec, Pageable pageable) {
-        Page<Cliente> page = clienteRepository.findAll(spec, pageable);
-        List<Cliente> content = page.getContent();
-        return new ClientePagingResponse(page.getTotalElements(), (long) page.getNumber(), (long) page.getNumberOfElements(), pageable.getOffset(), (long) page.getTotalPages(), content);
+    public TransportePagingResponse get(Specification<Transporte> spec, Pageable pageable) {
+        Page<Transporte> page = transporteRepository.findAll(spec, pageable);
+        List<Transporte> content = page.getContent();
+        return new TransportePagingResponse(page.getTotalElements(), (long) page.getNumber(), (long) page.getNumberOfElements(), pageable.getOffset(), (long) page.getTotalPages(), content);
     }
 
     /**
@@ -97,8 +93,8 @@ public class ClienteService {
      * @param spec *
      * @return elements
      */
-    public List<Cliente> get(Specification<Cliente> spec, Sort sort) {
-        return clienteRepository.findAll(spec, sort);
+    public List<Transporte> get(Specification<Transporte> spec, Sort sort) {
+        return transporteRepository.findAll(spec, sort);
     }
 
     /**
@@ -107,7 +103,7 @@ public class ClienteService {
      * @param item element to create
      * @return element after creation
      */
-    public Cliente create(Cliente item) {
+    public Transporte create(Transporte item) {
         return save(item);
     }
 
@@ -119,7 +115,7 @@ public class ClienteService {
      * @return element after update
      * @throws EntityNotFoundException Exception when retrieve entity
      */
-    public Cliente update(Integer id, Cliente item) {
+    public Transporte update(Integer id, Transporte item) {
         if (item.getId() == null) {
             throw new RuntimeException("Can not update entity, entity without ID.");
         } else if (!id.equals(item.getId())) {
@@ -134,16 +130,7 @@ public class ClienteService {
      * @param item element to save
      * @return element after save
      */
-    protected Cliente save(Cliente item) {
-        return clienteRepository.save(item);
-    }
-
-    /**
-     * get entregas cliente
-     *
-     * @return List EntregaTipoProducto
-     */
-    public List<Entrega> getEntregas(Integer clienteId) {
-        return entregaRepository.findAllByClienteId(clienteId);
+    protected Transporte save(Transporte item) {
+        return transporteRepository.save(item);
     }
 }

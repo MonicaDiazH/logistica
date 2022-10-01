@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -35,20 +36,24 @@ public class Transporte implements Serializable {
     @Size(max = 100, message = "El campo descripcion excede la longitud permitida")
     private String descripcion; 
 
-    @Column(name = "identificacion" )
-    @NotBlank(message = "No puede estar vacio el campo identificacion")
-    @Size(max = 10, message = "El campo identificacion excede la longitud permitida")
-    private String identificacion; 
+    @Column(name = "placa" )
+    @Size(max = 6, message = "El campo placa excede la longitud permitida")
+    @Pattern(regexp="[a-zA-Z]{3}[0-9]{3}", message="{invalid.placa}")
+    private String placa;
+
+    @Column(name = "flota" )
+    @Size(max = 8, message = "El campo flota excede la longitud permitida")
+    @Pattern(regexp="[a-zA-Z]{3}[0-9]{4}[a-zA-Z]{1}", message="{invalid.flota}")
+    private String flota;
+
+    @Column(name = "tipo_transporte" )
+    @Size(max = 10, message = "El campo tipoTransporte excede la longitud permitida")
+    private String tipoTransporte;
 
     @OneToMany(mappedBy = "transporte", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonIgnore
     private Set<Entrega> entregaes;
-
-    @JoinColumn(name = "tipo_transporte_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @ToString.Exclude
-    private TipoTransporte tipoTransporte;
 
     @Override
     public boolean equals(Object o) {
