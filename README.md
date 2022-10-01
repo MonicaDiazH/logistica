@@ -29,6 +29,16 @@ The response should be:
 GET /api/cliente?nombre=Juan
 ```
 
+## Entities
+```sh
+GET /api/cliente
+GET /api/tipoProducto
+GET /api/transporte
+GET /api/bodega
+GET /api/puerto
+GET /api/entrega
+```
+
 ## Security
 ```sh
 POST /api/auth
